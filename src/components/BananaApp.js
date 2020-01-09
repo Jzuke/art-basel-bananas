@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import numeral from 'numeral'
+import Div100vh from 'react-div-100vh'
 import TapedBanana from './TapedBanana'
 
 const BananaApp = () => {
@@ -21,7 +22,7 @@ const BananaApp = () => {
 	}, [tapedBananas, netWorth]) 
 
 	return (
-		<div className="container">
+		<Div100vh>
 		<header className="header no-select"><a className="remove-decoration" href="https://www.jakezuke.me" rel="noopener noreferrer" target="_blank">Created by Jake Zuke</a></header>
 		{tapedBananas.map((item, index) => <TapedBanana key={index} position={tapedBananas[index]} />)}
 			<h4 className="show-desktop steps no-select">Step 1: Click</h4>
@@ -29,7 +30,7 @@ const BananaApp = () => {
 			<h4 className="steps no-select">Step 2: Profit</h4>
 			<h1 className='net-worth steps no-select'>Your net worth: {numeral(netWorth).format('$0,0')}</h1>
 
-		</div>
+		</Div100vh>
 	)
 }
 

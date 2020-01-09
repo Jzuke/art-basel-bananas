@@ -4,11 +4,6 @@ import * as serviceWorker from './serviceWorker';
 import './styles/styles.scss'
 import BananaApp from './components/BananaApp'
 
-window.onresize = function() {
-    document.body.height = window.innerHeight;
-}
-window.onresize(); 
-
 ReactDOM.render(<BananaApp/>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
