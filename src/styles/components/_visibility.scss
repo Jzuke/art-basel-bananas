@@ -1,11 +1,11 @@
 .show-mobile {
-	@media only screen and (min-device-width: $desktop-breakpoint){
+	@media only screen and (min-width: $desktop-breakpoint){
 		display:none;
 	}
 }
 
 .show-desktop {
-	@media only screen and (max-device-width: $desktop-breakpoint - .01rem){
+	@media only screen and (max-width: $desktop-breakpoint - .01rem){
 		display:none;
 	}
 }
