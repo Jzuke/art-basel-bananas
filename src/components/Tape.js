@@ -4,7 +4,8 @@ const Tape = (props) => {
 
 	return (
 		<>
-			<div className="line" style={{top:`${props.position.y + 65}px`, left: `${props.position.x - 35}px`}}></div>
+			<div className="show-desktop line" style={{top:`${props.position.y + 75}px`, left: `${props.position.x - 35}px`}}></div>
+			<div className="show-mobile line" style={{top:`${props.position.y + 20}px`, left: `${props.position.x - 35}px`}}></div>
 		</>
 	)
 }

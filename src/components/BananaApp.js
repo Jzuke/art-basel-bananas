@@ -29,7 +29,6 @@ const BananaApp = () => {
 			<h4 className="show-mobile steps no-select">Step 1: Tap</h4>
 			<h4 className="steps no-select">Step 2: Profit</h4>
 			<h1 className='net-worth steps no-select'>Your net worth: {numeral(netWorth).format('$0,0')}</h1>
-
 		</Div100vh>
 	)
 }
