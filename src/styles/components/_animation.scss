@@ -1,0 +1,13 @@
+.line {
+  height:20px;
+  width:0;
+  position: absolute;
+  background:#aaa;
+  transform:rotate(-35deg);
+  transform-origin:left;
+  animation:grow .75s ease forwards;
+  z-index:1000;
+}
+@keyframes grow{
+  to {width:125px;}
+}

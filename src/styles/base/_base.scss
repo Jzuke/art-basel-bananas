@@ -1,0 +1,18 @@
+* {
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 62.5%;
+	overflow:hidden;
+}
+
+body {
+	background-image: url('../../img/concrete-wall.png');
+	background-color: #2B9EB3;
+	color: #373F51;
+	cursor: url('../../img/bananacursor.svg'), auto;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 1.6em;
+	line-height: 1.6;
+}
