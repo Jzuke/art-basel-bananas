@@ -6,7 +6,7 @@
   transform:rotate(-35deg);
   transform-origin:left;
   animation:grow .75s ease forwards;
-  z-index:1000;
+  z-index:1100;
 }
 @keyframes grow{
   to {width:125px;}

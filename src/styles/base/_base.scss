@@ -1,5 +1,9 @@
-* {
-	box-sizing: border-box;
+*,
+*::after,
+*::before {
+	margin: 0;
+	padding: 0;
+	box-sizing: inherit;
 }
 
 html {
@@ -8,6 +12,7 @@ html {
 }
 
 body {
+	box-sizing: border-box;
 	background-image: url('../../img/concrete-wall.png');
 	background-color: #2B9EB3;
 	color: #373F51;
