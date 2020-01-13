@@ -1,15 +1,19 @@
 @import url('https://fonts.googleapis.com/css?family=Work+Sans&display=swap');
 
 .steps {
-	font-family: 'Work Sans', sans-serif;
+	font-family: $base-font;
 	padding:3rem 0 0 3rem;
 }
 
+.net-worth {
+	font-family: $base-font;
+}
+
 .header {
-	font-family: 'Work Sans', sans-serif;
+	font-family: $base-font;
 	position:fixed;
 	right:0;
-	padding:3rem 3rem 0 0;
+	top:0;
 	cursor:pointer;
 }
 
