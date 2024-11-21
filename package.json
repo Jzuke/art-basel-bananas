@@ -8,15 +8,16 @@
     "@testing-library/user-event": "^7.1.2",
     "express": "^4.17.1",
     "express-favicon": "^2.0.1",
-    "node-sass": "^4.13.0",
+    "sass": "^1.69.0",
     "numeral": "^2.0.6",
     "path": "^0.12.7",
     "react": "^16.12.0",
     "react-div-100vh": "^0.3.8",
     "react-dom": "^16.12.0",
     "react-ga": "^2.7.0",
-    "react-scripts": "3.3.0",
-    "serialize-javascript": "^3.1.0"
+    "react-scripts": "5.0.1",
+    "serialize-javascript": "^3.1.0",
+    "lucide-react": "^0.263.1"
   },
   "scripts": {
     "start": "react-scripts start",
