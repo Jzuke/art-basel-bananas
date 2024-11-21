@@ -288,7 +288,7 @@ const BananaApp = () => {
                   someone actually paid that
                 </a>{" "}
                 for a banana taped to a wall. Let's see how many overpriced
-                fruit pieces it takes to join the billionaire club.
+                fruit pieces it takes to join the top 10 billionaire club.
               </p>
             </div>
 
@@ -379,7 +379,7 @@ const BananaApp = () => {
                   color: "#333",
                 }}
               >
-                The Billionaire Shopping List:
+                The Billionaire Club:
               </h4>
               <div
                 style={{
