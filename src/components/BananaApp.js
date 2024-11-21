@@ -46,12 +46,14 @@ const WealthyPeople = [
     description: "Former Microsoft CEO",
   },
 ];
+
 const sortedWealthyPeople = [...WealthyPeople].sort(
   (a, b) => a.netWorth - b.netWorth
 );
 
 const BananaApp = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isProgressExpanded, setIsProgressExpanded] = useState(false);
   const [netWorth, setNetWorth] = useState(0);
   const [tapedBananas, setTapedBananas] = useState([]);
 
@@ -97,6 +99,7 @@ const BananaApp = () => {
     if (currentIndex === -1) return sortedWealthyPeople.slice(0, 3);
     return sortedWealthyPeople.slice(currentIndex + 1, currentIndex + 4);
   };
+
   const calculatePaychecks = () => Math.ceil(netWorth / AVERAGE_PAYCHECK);
   const calculateYearsOfWork = () => (calculatePaychecks() / 26).toFixed(1);
   const calculatePercentage = (wealthy) =>
@@ -117,100 +120,129 @@ const BananaApp = () => {
         position: "relative",
       }}
     >
-      <header
+      <div
         style={{
-          padding: "3rem 0 0 3rem",
-          position: "fixed",
-          right: "0",
-          top: "0",
+          padding: isMobile ? "1rem" : "3rem",
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.5rem",
         }}
       >
         <a
           href="https://www.jakezuke.me"
           style={{
             color: "#333",
-            padding: "40px",
             fontSize: "14px",
             letterSpacing: "1px",
             textTransform: "uppercase",
             fontFamily: "Helvetica, Arial, sans-serif",
             fontWeight: "500",
             textDecoration: "underline",
+            marginBottom: "1rem",
           }}
         >
           Created by Jake Zuke
         </a>
-      </header>
 
+        <h4
+          className="show-desktop steps no-select"
+          style={{
+            fontSize: "14px",
+            letterSpacing: "1px",
+            textTransform: "uppercase",
+            fontFamily: "Helvetica, Arial, sans-serif",
+            color: "#333",
+            marginBottom: "10px",
+            fontWeight: "500",
+          }}
+        >
+          Step 1: Click To Tape A Banana
+        </h4>
+
+        <h4
+          className="show-mobile steps no-select"
+          style={{
+            fontSize: "14px",
+            letterSpacing: "1px",
+            textTransform: "uppercase",
+            fontFamily: "Helvetica, Arial, sans-serif",
+            color: "#333",
+            marginBottom: "10px",
+            fontWeight: "500",
+          }}
+        >
+          Step 1: Tap To Tape a Banana
+        </h4>
+
+        <h4
+          className="steps no-select"
+          style={{
+            fontSize: "14px",
+            letterSpacing: "1px",
+            textTransform: "uppercase",
+            fontFamily: "Helvetica, Arial, sans-serif",
+            color: "#333",
+            fontWeight: "500",
+          }}
+        >
+          Step 2: Profit
+        </h4>
+      </div>
       {tapedBananas.map((item, index) => (
         <TapedBanana key={index} position={item} />
       ))}
 
-      <h4
-        className="show-desktop steps no-select"
-        style={{
-          padding: "3rem 0 0 3rem",
-          fontSize: "14px",
-          letterSpacing: "1px",
-          textTransform: "uppercase",
-          fontFamily: "Helvetica, Arial, sans-serif",
-          color: "#333",
-          marginBottom: "10px",
-          fontWeight: "500",
-        }}
-      >
-        Step 1: Click To Tape A Banana
-      </h4>
-
-      <h4
-        className="show-mobile steps no-select"
-        style={{
-          padding: "3rem 0 0 3rem",
-          fontSize: "14px",
-          letterSpacing: "1px",
-          textTransform: "uppercase",
-          fontFamily: "Helvetica, Arial, sans-serif",
-          color: "#333",
-          marginBottom: "10px",
-          fontWeight: "500",
-        }}
-      >
-        Step 1: Tap To Tape a Banana
-      </h4>
-
-      <h4
-        className="steps no-select"
-        style={{
-          padding: "3rem 0 0 3rem",
-          fontSize: "14px",
-          letterSpacing: "1px",
-          textTransform: "uppercase",
-          fontFamily: "Helvetica, Arial, sans-serif",
-          color: "#333",
-          fontWeight: "500",
-        }}
-      >
-        Step 2: Profit
-      </h4>
-
       <div
-        className="progress-container"
+        className={`progress-container ${isProgressExpanded ? "expanded" : ""}`}
         style={{
           position: "absolute",
-          bottom: "40px",
+		  overflow: "hidden",
+          bottom: isMobile ? "0" : "40px",
           left: "50%",
           transform: "translateX(-50%)",
-          width: "min(calc(100% - 80px), 800px)",
+          width: isMobile ? "100%" : "min(calc(100% - 80px), 800px)",
           background: "#f8f8f8",
-          padding: "20px",
-          borderRadius: "10px",
+          padding: isMobile ? "16px" : "20px",
+          borderRadius: isMobile ? "12px 12px 0 0" : "10px",
           boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
           border: "1px solid #ddd",
           overflowY: "auto",
-          maxHeight: "calc(100vh - 240px)",
+          maxHeight: isMobile
+            ? isProgressExpanded
+              ? "calc(100vh - 120px)"
+              : "160px"
+            : "calc(100vh - 240px)",
           cursor: "default",
+          transition: "max-height 0.3s ease-in-out",
+          zIndex: isMobile && isProgressExpanded ? 2000 : "auto", // Added this line
         }}
       >
+        {isMobile && (
+          <button
+            onClick={() => setIsProgressExpanded(!isProgressExpanded)}
+            style={{
+              width: "100%",
+              height: "24px",
+              background: "transparent",
+              border: "none",
+              cursor: "pointer",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginBottom: "8px",
+            }}
+          >
+            <div
+              style={{
+                width: "40px",
+                height: "4px",
+                background: "#ddd",
+                borderRadius: "2px",
+              }}
+            />
+          </button>
+        )}
+
         {closestWealthy && (
           <>
             {/* Net Worth and Banana Count */}
@@ -218,10 +250,10 @@ const BananaApp = () => {
               style={{
                 display: "flex",
                 flexDirection: isMobile ? "column" : "row",
-                gap: isMobile ? "16px" : "0",
+                gap: isMobile ? "12px" : "0",
                 justifyContent: "space-between",
                 alignItems: isMobile ? "stretch" : "center",
-                marginBottom: "24px",
+                marginBottom: isMobile ? "16px" : "24px",
                 paddingBottom: "16px",
                 borderBottom: "1px solid #eee",
               }}
@@ -229,7 +261,7 @@ const BananaApp = () => {
               <h2
                 style={{
                   margin: 0,
-                  fontSize: isMobile ? "1.4em" : "1.8em",
+                  fontSize: isMobile ? "1.2em" : "1.8em",
                   fontWeight: "600",
                   textAlign: isMobile ? "center" : "left",
                 }}
@@ -239,7 +271,7 @@ const BananaApp = () => {
               <div
                 style={{
                   background: "#2B9EB3",
-                  padding: "8px 16px",
+                  padding: "6px 12px",
                   borderRadius: "20px",
                   color: "white",
                   display: "flex",
@@ -257,197 +289,205 @@ const BananaApp = () => {
               </div>
             </div>
 
-            {/* About Section */}
-            <div
-              style={{
-                marginBottom: "24px",
-                padding: "16px",
-                background: "#f5f5f5",
-                borderRadius: "12px",
-              }}
-            >
-              <p
-                style={{
-                  margin: "0",
-                  fontSize: "0.9em",
-                  lineHeight: "1.4",
-                  color: "#444",
-                }}
-              >
-                Each banana costs $6.2M — because in the world we live in,{" "}
-                <a
-                  href="https://www.morningbrew.com/stories/2024/11/20/a-duct-taped-banana-sells"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    color: "#2B9EB3",
-                    textDecoration: "underline",
-                    fontWeight: "500",
-                  }}
-                >
-                  someone actually paid that
-                </a>{" "}
-                for a banana taped to a wall. Let's see how many overpriced
-                fruit pieces it takes to join the top 10 billionaire club.
-              </p>
-            </div>
-
-            {/* Progress Section */}
-            <div
-              style={{
-                marginBottom: "24px",
-              }}
-            >
-              <h3
-                style={{
-                  margin: "0 0 12px 0",
-                  fontSize: "1em",
-                  color: "#333",
-                }}
-              >
-                Next stop: {closestWealthy.name}
-              </h3>
-
-              <div
-                style={{
-                  background: "#eee",
-                  borderRadius: "8px",
-                  height: "16px",
-                  overflow: "hidden",
-                  marginBottom: "8px",
-                }}
-              >
+            {/* Show full content when expanded on mobile or always on desktop */}
+            {(!isMobile || isProgressExpanded) && (
+              <>
+                {/* About Section */}
                 <div
                   style={{
-                    background: "#2B9EB3",
-                    height: "100%",
-                    width: `${Math.min(percentage, 100)}%`,
-                    transition: "width 0.3s ease",
+                    marginBottom: "24px",
+                    padding: "16px",
+                    background: "#f5f5f5",
+                    borderRadius: "12px",
                   }}
-                />
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  fontSize: "0.85em",
-                  color: "#666",
-                  marginBottom: "16px",
-                }}
-              >
-                <span>{percentage}% there</span>
-                <span>
-                  {numeral(closestWealthy.netWorth - netWorth).format("$0,0")}{" "}
-                  to go
-                </span>
-              </div>
-
-              {/* Average American Section */}
-              <div
-                style={{
-                  fontSize: "0.85em",
-                  color: "#666",
-                  background: "#f5f5f5",
-                  padding: "12px",
-                  borderRadius: "8px",
-                }}
-              >
-                Your average American making{" "}
-                {numeral(AVERAGE_US_SALARY).format("$0,0")}/year would need{" "}
-                <strong>
-                  {numeral(paychecks).format("0,0")} biweekly paychecks
-                </strong>{" "}
-                to match what you've made taping bananas. That's{" "}
-                <strong>{yearsOfWork} years</strong> of work.
-              </div>
-            </div>
-
-            {/* Billionaire List */}
-            <div
-              className="show-desktop"
-              style={{
-                fontSize: "0.85em",
-                color: "#666",
-                borderTop: "1px solid #eee",
-                paddingTop: "16px",
-              }}
-            >
-              <h4
-                style={{
-                  margin: "0 0 12px 0",
-                  color: "#333",
-                }}
-              >
-                The Billionaire Club:
-              </h4>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-                  gap: "8px",
-                }}
-              >
-                {[
-                  ...(netWorth > 0
-                    ? [
-                        {
-                          name: "YOU",
-                          netWorth: netWorth,
-                          description: "Banana Art Collector",
-                        },
-                      ]
-                    : []),
-                  ...WealthyPeople,
-                ]
-                  .sort((a, b) => b.netWorth - a.netWorth)
-                  .slice(0, 10)
-                  .reverse()
-                  .map((person, index) => (
-                    <div
-                      key={person.name}
+                >
+                  <p
+                    style={{
+                      margin: "0",
+                      fontSize: "0.9em",
+                      lineHeight: "1.4",
+                      color: "#444",
+                    }}
+                  >
+                    Each taped banana pays $6.2M — because in the world we live in,{" "}
+                    <a
+                      href="https://www.morningbrew.com/stories/2024/11/20/a-duct-taped-banana-sells"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       style={{
-                        padding: "8px 12px",
-                        background:
-                          person.name === "YOU" ? "#2B9EB3" : "#f5f5f5",
-                        borderRadius: "6px",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        color: person.name === "YOU" ? "white" : "inherit",
+                        color: "#2B9EB3",
+                        textDecoration: "underline",
+                        fontWeight: "500",
                       }}
                     >
-                      <div style={{ flex: 1 }}>
-                        <p style={{ margin: "0", fontWeight: "500" }}>
-                          {10 - index}. {person.name}
-                        </p>
-                        <p
+                      someone actually paid that
+                    </a>{" "}
+                    for a banana taped to a wall. Let's see how many overpriced
+                    fruit pieces it takes to join the top 10 billionaire club.
+                  </p>
+                </div>
+
+                {/* Progress Section */}
+                <div
+                  style={{
+                    marginBottom: "24px",
+                  }}
+                >
+                  <h3
+                    style={{
+                      margin: "0 0 12px 0",
+                      fontSize: "1em",
+                      color: "#333",
+                    }}
+                  >
+                    Next stop: {closestWealthy.name}
+                  </h3>
+
+                  <div
+                    style={{
+                      background: "#eee",
+                      borderRadius: "8px",
+                      height: "16px",
+                      overflow: "hidden",
+                      marginBottom: "8px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        background: "#2B9EB3",
+                        height: "100%",
+                        width: `${Math.min(percentage, 100)}%`,
+                        transition: "width 0.3s ease",
+                      }}
+                    />
+                  </div>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      fontSize: "0.85em",
+                      color: "#666",
+                      marginBottom: "16px",
+                    }}
+                  >
+                    <span>{percentage}% there</span>
+                    <span>
+                      {numeral(closestWealthy.netWorth - netWorth).format(
+                        "$0,0"
+                      )}{" "}
+                      to go
+                    </span>
+                  </div>
+
+                  {/* Average American Section */}
+                  <div
+                    style={{
+                      fontSize: "0.85em",
+                      color: "#666",
+                      background: "#f5f5f5",
+                      padding: "12px",
+                      borderRadius: "8px",
+                    }}
+                  >
+                    Your average American making{" "}
+                    {numeral(AVERAGE_US_SALARY).format("$0,0")}/year would need{" "}
+                    <strong>
+                      {numeral(paychecks).format("0,0")} biweekly paychecks
+                    </strong>{" "}
+                    to match what you've made taping bananas. That's{" "}
+                    <strong>{yearsOfWork} years</strong> of work.
+                  </div>
+                </div>
+
+                {/* Billionaire List - Only show on desktop or when expanded on mobile */}
+                <div
+                  style={{
+                    fontSize: "0.85em",
+                    color: "#666",
+                    borderTop: "1px solid #eee",
+                    paddingTop: "16px",
+                  }}
+                >
+                  <h4
+                    style={{
+                      margin: "0 0 12px 0",
+                      color: "#333",
+                    }}
+                  >
+                    The Billionaire Club:
+                  </h4>
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: isMobile
+                        ? "1fr"
+                        : "repeat(auto-fit, minmax(250px, 1fr))",
+                      gap: "8px",
+                    }}
+                  >
+                    {[
+                      ...(netWorth > 0
+                        ? [
+                            {
+                              name: "YOU",
+                              netWorth: netWorth,
+                              description: "Banana Art Collector",
+                            },
+                          ]
+                        : []),
+                      ...WealthyPeople,
+                    ]
+                      .sort((a, b) => b.netWorth - a.netWorth)
+                      .slice(0, 10)
+                      .reverse()
+                      .map((person, index) => (
+                        <div
+                          key={person.name}
                           style={{
-                            margin: "0",
-                            fontSize: "0.9em",
-                            color:
-                              person.name === "YOU"
-                                ? "rgba(255,255,255,0.8)"
-                                : "#666",
+                            padding: "8px 12px",
+                            background:
+                              person.name === "YOU" ? "#2B9EB3" : "#f5f5f5",
+                            borderRadius: "6px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            color: person.name === "YOU" ? "white" : "inherit",
                           }}
                         >
-                          {person.description}
-                        </p>
-                      </div>
-                      <div
-                        style={{
-                          marginLeft: "12px",
-                          fontSize: "0.9em",
-                          fontWeight: "500",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {numeral(person.netWorth).format("$0.0a")}
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            </div>
+                          <div style={{ flex: 1 }}>
+                            <p style={{ margin: "0", fontWeight: "500" }}>
+                              {10 - index}. {person.name}
+                            </p>
+                            <p
+                              style={{
+                                margin: "0",
+                                fontSize: "0.9em",
+                                color:
+                                  person.name === "YOU"
+                                    ? "rgba(255,255,255,0.8)"
+                                    : "#666",
+                              }}
+                            >
+                              {person.description}
+                            </p>
+                          </div>
+                          <div
+                            style={{
+                              marginLeft: "12px",
+                              fontSize: "0.9em",
+                              fontWeight: "500",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {numeral(person.netWorth).format("$0.0a")}
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              </>
+            )}
           </>
         )}
       </div>
