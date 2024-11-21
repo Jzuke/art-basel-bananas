@@ -51,18 +51,37 @@ const sortedWealthyPeople = [...WealthyPeople].sort(
 );
 
 const BananaApp = () => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [netWorth, setNetWorth] = useState(0);
   const [tapedBananas, setTapedBananas] = useState([]);
 
   useEffect(() => {
-	const handleMouseClick = (e) => {
-	  setTapedBananas(prevBananas => [...prevBananas, { x: e.clientX, y: e.clientY }]);
-	  setNetWorth(prevWorth => prevWorth + 6200000);
-	};
-	
-	document.addEventListener('click', handleMouseClick);
-	return () => document.removeEventListener('click', handleMouseClick);
-  }, []); 
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    const handleMouseClick = (e) => {
+      // Check if the click target is within the progress container
+      const progressContainer = document.querySelector(".progress-container");
+      if (progressContainer && progressContainer.contains(e.target)) {
+        return; // Don't add banana if clicking inside progress container
+      }
+
+      setTapedBananas((prevBananas) => [
+        ...prevBananas,
+        { x: e.clientX, y: e.clientY },
+      ]);
+      setNetWorth((prevWorth) => prevWorth + 6200000);
+    };
+
+    document.addEventListener("click", handleMouseClick);
+    return () => document.removeEventListener("click", handleMouseClick);
+  }, []);
 
   const findClosestWealthy = () => {
     return (
@@ -97,28 +116,28 @@ const BananaApp = () => {
         margin: "20px",
         height: "calc(100vh - 40px)",
         position: "relative",
-        overflow: "hidden"
       }}
     >
       <header
         style={{
+          padding: "3rem 0 0 3rem",
           position: "fixed",
-		  padding:"10px",
-          right: "3rem",
-          top: "3rem",
-          fontSize: "14px",
-          letterSpacing: "1px",
-          textTransform: "uppercase",
-          fontFamily: "Helvetica, Arial, sans-serif",
-          fontWeight: "500",
-          zIndex: 1000
+          right: "0",
+          top: "0",
         }}
       >
         <a
           href="https://www.jakezuke.me"
           style={{
-            textDecoration: "underline",
+            textDecoration: "none",
             color: "#333",
+            padding: "40px",
+            fontSize: "14px",
+            letterSpacing: "1px",
+            textTransform: "uppercase",
+            fontFamily: "Helvetica, Arial, sans-serif",
+            fontWeight: "500",
+            textDecoration: "underline",
           }}
         >
           Created by Jake Zuke
@@ -142,7 +161,7 @@ const BananaApp = () => {
           fontWeight: "500",
         }}
       >
-        Step 1: Click Anywhere
+        Step 1: Click To Tape A Banana
       </h4>
 
       <h4
@@ -158,13 +177,13 @@ const BananaApp = () => {
           fontWeight: "500",
         }}
       >
-        Step 1: Tap Anywhere
+        Step 1: Tap To Tape a Banana
       </h4>
 
       <h4
         className="steps no-select"
         style={{
-          padding: "0 0 0 3rem",
+          padding: "3rem 0 0 3rem",
           fontSize: "14px",
           letterSpacing: "1px",
           textTransform: "uppercase",
@@ -176,7 +195,7 @@ const BananaApp = () => {
         Step 2: Profit
       </h4>
 
-	  <div
+      <div
         className="progress-container"
         style={{
           position: "absolute",
@@ -191,172 +210,246 @@ const BananaApp = () => {
           border: "1px solid #ddd",
           overflowY: "auto",
           maxHeight: "calc(100vh - 240px)",
-          "@media (max-width: 768px)": {
-            width: "calc(100% - 60px)",
-            bottom: "30px",
-            maxHeight: "calc(100vh - 200px)"
-          }
+          cursor: "default",
         }}
       >
         {closestWealthy && (
           <>
-            <h2
-              style={{
-                margin: "0 0 20px 0",
-                fontSize: "1.5em",
-                textAlign: "center",
-                wordBreak: "break-word",
-                userSelect: "none",
-                WebkitUserSelect: "none",
-                MozUserSelect: "none",
-                msUserSelect: "none"
-              }}
-            >
-              Your net worth: {numeral(netWorth).format("$0,0")}
-            </h2>
-
+            {/* Net Worth and Banana Count */}
             <div
               style={{
                 display: "flex",
-                flexDirection: "column",
-                gap: "10px",
-                marginBottom: "20px",
+                flexDirection: isMobile ? "column" : "row",
+                gap: isMobile ? "16px" : "0",
+                justifyContent: "space-between",
+                alignItems: isMobile ? "stretch" : "center",
+                marginBottom: "24px",
+                paddingBottom: "16px",
+                borderBottom: "1px solid #eee",
               }}
             >
-              <div>
-                <h3 style={{ margin: "0 0 5px 0", wordBreak: "break-word" }}>
-                  Current Goal: {closestWealthy.name}
-                </h3>
-                <p
-                  style={{
-                    margin: "0 0 5px 0",
-                    fontSize: "0.9em",
-                    color: "#666",
-                  }}
-                >
-                  {closestWealthy.description}
-                </p>
-                <p
-                  style={{ 
-                    margin: "0", 
-                    fontSize: "0.9em", 
-                    fontWeight: "bold",
-                    wordBreak: "break-word"
-                  }}
-                >
-                  Net Worth: {numeral(closestWealthy.netWorth).format("$0,0")}
-                </p>
-              </div>
-            </div>
-
-            <div
-              style={{
-                background: "#eee",
-                borderRadius: "10px",
-                height: "20px",
-                overflow: "hidden",
-                marginBottom: "10px",
-              }}
-            >
+              <h2
+                style={{
+                  margin: 0,
+                  fontSize: isMobile ? "1.4em" : "1.8em",
+                  fontWeight: "600",
+                  textAlign: isMobile ? "center" : "left",
+                }}
+              >
+                Your net worth: {numeral(netWorth).format("$0,0")}
+              </h2>
               <div
                 style={{
                   background: "#2B9EB3",
-                  height: "100%",
-                  width: `${Math.min(percentage, 100)}%`,
-                  transition: "width 0.3s ease",
+                  padding: "8px 16px",
+                  borderRadius: "20px",
+                  color: "white",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: isMobile ? "center" : "flex-start",
+                  gap: "8px",
+                  fontSize: "0.9em",
                 }}
-              />
+              >
+                <span>🍌</span>
+                <span>
+                  {tapedBananas.length}{" "}
+                  {tapedBananas.length === 1 ? "banana" : "bananas"} taped
+                </span>
+              </div>
             </div>
 
+            {/* About Section */}
             <div
               style={{
-                display: "flex",
-                justifyContent: "space-between",
-                fontSize: "0.9em",
-                color: "#666",
-                marginBottom: "20px",
-              }}
-            >
-              <span>{percentage}% complete</span>
-              <span>
-                {numeral(closestWealthy.netWorth - netWorth).format("$0,0")} to
-                go
-              </span>
-            </div>
-
-            <div
-              style={{
-                padding: "10px",
+                marginBottom: "24px",
+                padding: "16px",
                 background: "#f5f5f5",
-                borderRadius: "8px",
-                marginBottom: "20px",
+                borderRadius: "12px",
               }}
             >
-              <p style={{ margin: "0", fontSize: "0.9em", color: "#666" }}>
-                An average American earning{" "}
-                {numeral(AVERAGE_US_SALARY).format("$0,0")}/year would need
-                <br />
-                <strong>
-                  {numeral(paychecks).format("0,0")} biweekly paychecks
-                </strong>{" "}
-                to accumulate your current net worth
-                <br />
-                (that's {yearsOfWork} years of work)
+              <p
+                style={{
+                  margin: "0",
+                  fontSize: "0.9em",
+                  lineHeight: "1.4",
+                  color: "#444",
+                }}
+              >
+                Each banana costs $6.2M — because in the world we live in,{" "}
+                <a
+                  href="https://www.morningbrew.com/stories/2024/11/20/a-duct-taped-banana-sells"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: "#2B9EB3",
+                    textDecoration: "underline",
+                    fontWeight: "500",
+                  }}
+                >
+                  someone actually paid that
+                </a>{" "}
+                for a banana taped to a wall. Let's see how many overpriced
+                fruit pieces it takes to join the billionaire club.
               </p>
             </div>
 
-            {nextWealthy.length > 0 && (
-              <div>
-                <h4 style={{ margin: "0 0 10px 0" }}>Who's Next:</h4>
+            {/* Progress Section */}
+            <div
+              style={{
+                marginBottom: "24px",
+              }}
+            >
+              <h3
+                style={{
+                  margin: "0 0 12px 0",
+                  fontSize: "1em",
+                  color: "#333",
+                }}
+              >
+                Next stop: {closestWealthy.name}
+              </h3>
+
+              <div
+                style={{
+                  background: "#eee",
+                  borderRadius: "8px",
+                  height: "16px",
+                  overflow: "hidden",
+                  marginBottom: "8px",
+                }}
+              >
                 <div
                   style={{
-                    display: "flex",
-                    gap: "10px",
-                    flexDirection: "column",
+                    background: "#2B9EB3",
+                    height: "100%",
+                    width: `${Math.min(percentage, 100)}%`,
+                    transition: "width 0.3s ease",
                   }}
-                >
-                  {nextWealthy.map((person, index) => (
+                />
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  fontSize: "0.85em",
+                  color: "#666",
+                  marginBottom: "16px",
+                }}
+              >
+                <span>{percentage}% there</span>
+                <span>
+                  {numeral(closestWealthy.netWorth - netWorth).format("$0,0")}{" "}
+                  to go
+                </span>
+              </div>
+
+              {/* Average American Section */}
+              <div
+                style={{
+                  fontSize: "0.85em",
+                  color: "#666",
+                  background: "#f5f5f5",
+                  padding: "12px",
+                  borderRadius: "8px",
+                }}
+              >
+                Your average American making{" "}
+                {numeral(AVERAGE_US_SALARY).format("$0,0")}/year would need{" "}
+                <strong>
+                  {numeral(paychecks).format("0,0")} biweekly paychecks
+                </strong>{" "}
+                to match what you've made taping bananas. That's{" "}
+                <strong>{yearsOfWork} years</strong> of work.
+              </div>
+            </div>
+
+            {/* Billionaire List */}
+            <div
+              className="show-desktop"
+              style={{
+                fontSize: "0.85em",
+                color: "#666",
+                borderTop: "1px solid #eee",
+                paddingTop: "16px",
+              }}
+            >
+              <h4
+                style={{
+                  margin: "0 0 12px 0",
+                  color: "#333",
+                }}
+              >
+                The Billionaire Shopping List:
+              </h4>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+                  gap: "8px",
+                }}
+              >
+                {[
+                  ...(netWorth > 0
+                    ? [
+                        {
+                          name: "YOU",
+                          netWorth: netWorth,
+                          description: "Banana Art Collector",
+                        },
+                      ]
+                    : []),
+                  ...WealthyPeople,
+                ]
+                  .sort((a, b) => b.netWorth - a.netWorth)
+                  .slice(0, 10)
+                  .reverse()
+                  .map((person, index) => (
                     <div
-                      key={index}
+                      key={person.name}
                       style={{
-                        padding: "10px",
-                        background: "#f5f5f5",
-                        borderRadius: "8px",
+                        padding: "8px 12px",
+                        background:
+                          person.name === "YOU" ? "#2B9EB3" : "#f5f5f5",
+                        borderRadius: "6px",
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
+                        color: person.name === "YOU" ? "white" : "inherit",
                       }}
                     >
-                      <div>
-                        <p style={{ margin: "0", fontWeight: "bold" }}>
-                          {person.name}
+                      <div style={{ flex: 1 }}>
+                        <p style={{ margin: "0", fontWeight: "500" }}>
+                          {10 - index}. {person.name}
                         </p>
                         <p
                           style={{
                             margin: "0",
-                            fontSize: "0.8em",
-                            color: "#666",
+                            fontSize: "0.9em",
+                            color:
+                              person.name === "YOU"
+                                ? "rgba(255,255,255,0.8)"
+                                : "#666",
                           }}
                         >
                           {person.description}
                         </p>
                       </div>
-                      <div style={{ textAlign: "right" }}>
-                        <p
-                          style={{
-                            margin: "0",
-                            fontSize: "0.9em",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {numeral(person.netWorth).format("$0,0")}
-                        </p>
+                      <div
+                        style={{
+                          marginLeft: "12px",
+                          fontSize: "0.9em",
+                          fontWeight: "500",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {numeral(person.netWorth).format("$0.0a")}
                       </div>
                     </div>
                   ))}
-                </div>
               </div>
-            )}
+            </div>
           </>
         )}
       </div>
