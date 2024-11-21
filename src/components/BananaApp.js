@@ -103,7 +103,6 @@ const BananaApp = () => {
     wealthy ? ((netWorth / wealthy.netWorth) * 100).toFixed(4) : 0;
 
   const closestWealthy = findClosestWealthy();
-  const nextWealthy = getNextWealthyPeople(closestWealthy);
   const percentage = calculatePercentage(closestWealthy);
   const paychecks = calculatePaychecks();
   const yearsOfWork = calculateYearsOfWork();
@@ -129,7 +128,6 @@ const BananaApp = () => {
         <a
           href="https://www.jakezuke.me"
           style={{
-            textDecoration: "none",
             color: "#333",
             padding: "40px",
             fontSize: "14px",
