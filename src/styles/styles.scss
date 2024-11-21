@@ -5,3 +5,26 @@
 @import './components/net-worth';
 @import './components/typography';
 @import './components/visibility';
+
+.animate-bounce {
+    animation: bounce 1s infinite;
+  }
+  
+  @keyframes bounce {
+    0%, 100% {
+      transform: translate(-50%, -45%);
+    }
+    50% {
+      transform: translate(-50%, -55%);
+    }
+  }
+  
+  .transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  
+  .duration-500 {
+    transition-duration: 500ms;
+  }
