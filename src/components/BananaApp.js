@@ -192,11 +192,11 @@ const BananaApp = () => {
         <TapedBanana key={index} position={item} />
       ))}
 
-      <div
+<div
         className={`progress-container ${isProgressExpanded ? "expanded" : ""}`}
         style={{
           position: "absolute",
-		  overflow: "hidden",
+          overflow: "hidden",
           bottom: isMobile ? "0" : "40px",
           left: "50%",
           transform: "translateX(-50%)",
@@ -213,8 +213,8 @@ const BananaApp = () => {
               : "160px"
             : "calc(100vh - 240px)",
           cursor: "default",
-          transition: "max-height 0.3s ease-in-out",
-          zIndex: isMobile && isProgressExpanded ? 2000 : "auto", // Added this line
+          transition: "all 0.3s ease-in-out",
+          zIndex: isMobile && isProgressExpanded ? 2000 : "auto",
         }}
       >
         {isMobile && (
@@ -222,7 +222,6 @@ const BananaApp = () => {
             onClick={() => setIsProgressExpanded(!isProgressExpanded)}
             style={{
               width: "100%",
-              height: "24px",
               background: "transparent",
               border: "none",
               cursor: "pointer",
@@ -230,18 +229,29 @@ const BananaApp = () => {
               justifyContent: "center",
               alignItems: "center",
               marginBottom: "8px",
+              padding: "8px 0",
+              outline: "none",
             }}
           >
-            <div
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#666"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               style={{
-                width: "40px",
-                height: "4px",
-                background: "#ddd",
-                borderRadius: "2px",
+                transform: `rotate(${isProgressExpanded ? 180 : 0}deg)`,
+                transition: "transform 0.3s ease-in-out",
               }}
-            />
+            >
+              <polyline points="18 15 12 9 6 15"></polyline>
+            </svg>
           </button>
         )}
+
 
         {closestWealthy && (
           <>
