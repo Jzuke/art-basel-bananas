@@ -120,14 +120,13 @@ const BananaApp = () => {
         position: "relative",
       }}
     >
-      <div
-        style={{
-          padding: isMobile ? "1rem" : "3rem",
-          display: "flex",
-          flexDirection: "column",
-          gap: "0.5rem",
-        }}
-      >
+       <div style={{
+      padding: isMobile ? "1rem" : "3rem",
+      display: "flex",
+      flexDirection: "column",
+      gap: "0.5rem",
+    }}>
+      <div style={{ display: "inline-block" }}>
         <a
           href="https://www.jakezuke.me"
           style={{
@@ -139,11 +138,12 @@ const BananaApp = () => {
             fontWeight: "500",
             textDecoration: "underline",
             marginBottom: "1rem",
+            display: "inline-block",
           }}
         >
           Created by Jake Zuke
         </a>
-
+      </div>
         <h4
           className="show-desktop steps no-select"
           style={{
